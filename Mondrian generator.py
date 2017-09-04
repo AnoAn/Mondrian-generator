@@ -6,15 +6,16 @@
 #import libraries
 from psychopy import os, visual, core, event, gui
 import random
-from PIL import ImageGrab
+from PIL import ImageGrab, Image
 
 #parameters
 def parameters():
-    global number_of_images, round_shape, shape_size
+    global number_of_images, round_shape, shape_size, grayscale
     myDlg = gui.Dlg(title="Set parameters")
     myDlg.addField('Number of images:', 5)
     myDlg.addField('Shape type:', choices=["Circles", "Squares"])
     myDlg.addField('Shape size proportions:', 1.0)
+    myDlg.addField('Grayscale:', choices=["No", "Yes"])
     myDlg.show()  # show dialog and wait for OK or Cancel
     if myDlg.OK:  # or if ok_data is not None
         try:
@@ -24,6 +25,10 @@ def parameters():
             else:
                 round_shape = 0
             shape_size = float(myDlg.data[2])
+            if str(myDlg.data[3]) == "No":
+                grayscale = 0
+            else:
+                grayscale = 1
             return
         except ValueError:
             parameters()
@@ -67,11 +72,14 @@ else:
         shapes.append(visual.Rect(win))
 
 event.Mouse(visible = True)
+
 for i in range(number_of_images):
     for shape in shapes:
         draw_Mondrians(win, shape)
     win.flip()
     y = ImageGrab.grab([650, 250, 1200, 800])
+    if grayscale:
+        y = y.convert('L')
     y.save("Images\Mondrian%d.jpg" % i)
     core.wait(0.01)
 
