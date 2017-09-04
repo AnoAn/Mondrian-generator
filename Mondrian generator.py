@@ -4,14 +4,34 @@
 #the program creates Mondrian pattern images of size 400x400 pixels
 
 #import libraries
-from psychopy import os, visual, core, event
+from psychopy import os, visual, core, event, gui
 import random
 from PIL import ImageGrab
 
 #parameters
-number_of_images = 5
-round_shape = 1
-shape_size = 1
+def parameters():
+    global number_of_images, round_shape, shape_size
+    myDlg = gui.Dlg(title="Set parameters")
+    myDlg.addField('Number of images:', 5)
+    myDlg.addField('Shape type:', choices=["Circles", "Squares"])
+    myDlg.addField('Shape size proportions:', 1.0)
+    myDlg.show()  # show dialog and wait for OK or Cancel
+    if myDlg.OK:  # or if ok_data is not None
+        try:
+            number_of_images = int(str(myDlg.data[0]))
+            if str(myDlg.data[1]) == "Circles":
+                round_shape = 1
+            else:
+                round_shape = 0
+            shape_size = float(myDlg.data[2])
+            return
+        except ValueError:
+            parameters()
+    else:
+        print('user cancelled')
+
+parameters()
+print shape_size
 
 #create Images folder
 if not os.path.exists("Images"):
@@ -35,7 +55,7 @@ def draw_Mondrians(win, sq):
     sq.lineColor = color
     #sq.color = color
     sq.setPos([random.randint(-500,450), random.randint(-550, 450)])
-    sq.setSize(random.randrange(30*shape_size, 100*shape_size,5))
+    sq.setSize(random.randrange(int(round(30*shape_size)), int(round(100*shape_size)),5))
     sq.draw()
 
 shapes = []
@@ -51,7 +71,7 @@ for i in range(number_of_images):
     for shape in shapes:
         draw_Mondrians(win, shape)
     win.flip()
-    y = ImageGrab.grab([550, 250, 1100, 800])
+    y = ImageGrab.grab([650, 250, 1200, 800])
     y.save("Images\Mondrian%d.jpg" % i)
     core.wait(0.01)
 
