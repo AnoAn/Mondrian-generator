@@ -1,5 +1,5 @@
-#--------------Mondrian generator--------------#
-#-------Copyright Suran & van Dooren 2017------#
+#--------------Mondrian generator v1.0-------------#
+#---------Suran, T., & van Dooren, R., 2017--------#
 
 #the program creates Mondrian pattern images of size 400x400 pixels
 
