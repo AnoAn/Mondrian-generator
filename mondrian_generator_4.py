@@ -12,7 +12,6 @@ def create_pattern_and_save(nshapes, shape, filename, dpi, grayscale):
         os.makedirs(save_directory)
 
     if grayscale:
-        a = 150
         colors = [(intensity/255,)*3 for intensity in [50, 100, 130, 180, 220]]
     else:
         colors = ['r', 'lawngreen', 'blue', 'yellow']
